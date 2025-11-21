@@ -1,8 +1,8 @@
-<!DOCTYPE>
-  <html>
+<!DOCTYPE html>
+<html>
 	<head>
 		<link rel="shortcut icon" href="./images/Majora.png" /> 
-		<link style="text/css" rel="stylesheet" href="stylesheet.css"/>
+		<link type="text/css" rel="stylesheet" href="stylesheet.css"/>
 		<title>MM Tracker</title>
 	</head>
 	<body oncontextmenu="return false;">
@@ -45,6 +45,13 @@
 						<option value="OFF">Off</option>
 						<option value="ON">On</option>
 					</select><br>
+					<br>
+					<!-- Save/Load/Export/Import controls -->
+					<button id="save_state_btn" onclick="saveTrackerState()">Save</button>
+					<button id="load_state_btn" onclick="loadTrackerState()">Load</button>
+					<button id="export_state_btn" onclick="exportState()">Export</button>
+					<button id="import_state_btn" onclick="document.getElementById('importStateFile').click()">Import</button>
+					<input id="importStateFile" type="file" accept="application/json" style="display:none;" onchange="importStateFromFile(event)">
 					</div>
 				</div>
 				<img src="./images/evansong.png" class="evansong"></img>
