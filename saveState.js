@@ -3,7 +3,7 @@
 // Saves the current state of Check into localStorage
 function saveTrackerState() {
     // Save options (mode, gossips, fairy eggs)
-    if (typeof saveTrackerOptions === 'function') saveTrackerOptions();
+    saveTrackerOptions();
 
     if (typeof Check === 'undefined')
         return;
@@ -48,7 +48,7 @@ function saveTrackerState() {
     localStorage.setItem('tracker_peeked_Check', JSON.stringify(peeked_Check));
 
     // Save hint (hintInput, barren_inputs, woth_inputs)
-    if (typeof saveTrackerHints === 'function') saveTrackerHints();
+    saveTrackerHints();
 
     showToast('State saved');
     console.log(checkCopy);
@@ -165,7 +165,7 @@ const InternalToShortCode = {
 // Restores the state of Check from localStorage
 function loadTrackerState() {
     // Load and apply options before applying peeked inputs
-    if (typeof loadTrackerOptions === 'function') loadTrackerOptions();
+    loadTrackerOptions();
 
     const saved = localStorage.getItem('tracker_Check');
     if (saved && typeof Check !== 'undefined') {
@@ -207,10 +207,8 @@ function loadTrackerState() {
                 }
             }
         }
-        
-        if (typeof Update === 'function'){
-            Update(); // Refreshes the UI according to project logic
-        }
+
+        Update();
 
         // Applies the saved peeked values (as if the user had entered them)
         const peekedRaw = localStorage.getItem('tracker_peeked_Check');
@@ -238,13 +236,11 @@ function loadTrackerState() {
             }
         }
 
-        if (typeof Update === 'function') {
-            Update(); // Refreshes the UI according to project logic
-        }
+        Update();
     }
 
     // Load hints after restoring Check inputs
-    if (typeof loadTrackerHints === 'function') loadTrackerHints();
+    loadTrackerHints();
 
     showToast('State loaded');
 }
@@ -323,7 +319,7 @@ function importStateFromFile(event) {
             if (obj.tracker_hints) localStorage.setItem('tracker_hints', JSON.stringify(obj.tracker_hints));
 
             // load into UI
-            if (typeof loadTrackerState === 'function') loadTrackerState();
+            loadTrackerState();
         } catch (err) {
             console.warn('Failed to import state file:', err);
         }
