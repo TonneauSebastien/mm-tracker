@@ -50,37 +50,41 @@ function saveTrackerState() {
     // Save hint (hintInput, barren_inputs, woth_inputs)
     if (typeof saveTrackerHints === 'function') saveTrackerHints();
 
-    showToast('State saved');}
+    showToast('State saved');
+    console.log(checkCopy);
+    console.log(peeked_Check);
+}
 
-    // Save hint into localStorage
-    function saveTrackerHints() {
-        const hints = {};
-        const hintArea = document.getElementById('hintInput');
-        if (hintArea && typeof hintArea.value !== 'undefined') {
-            const v = (hintArea.value || '').trim();
-            if (v.length > 0) hints['hintInput'] = v;
-        }
-
-        for (let i = 1; i <= 4; i++) {
-            const id = 'barren_input' + i;
-            const el = document.getElementById(id);
-            if (el && typeof el.value !== 'undefined') {
-                const v = (el.value || '').trim();
-                if (v.length > 0) hints[id] = v;
-            }
-        }
-
-        for (let i = 1; i <= 4; i++) {
-            const id = 'woth_input' + i;
-            const el = document.getElementById(id);
-            if (el && typeof el.value !== 'undefined') {
-                const v = (el.value || '').trim();
-                if (v.length > 0) hints[id] = v;
-            }
-        }
-
-        localStorage.setItem('tracker_hints', JSON.stringify(hints));
+// Save hint into localStorage
+function saveTrackerHints() {
+    const hints = {};
+    const hintArea = document.getElementById('hintInput');
+    if (hintArea && typeof hintArea.value !== 'undefined') {
+        const v = (hintArea.value || '').trim();
+        if (v.length > 0) hints['hintInput'] = v;
     }
+
+    for (let i = 1; i <= 4; i++) {
+        const id = 'barren_input' + i;
+        const el = document.getElementById(id);
+        if (el && typeof el.value !== 'undefined') {
+            const v = (el.value || '').trim();
+            if (v.length > 0) hints[id] = v;
+        }
+    }
+
+    for (let i = 1; i <= 4; i++) {
+        const id = 'woth_input' + i;
+        const el = document.getElementById(id);
+        if (el && typeof el.value !== 'undefined') {
+            const v = (el.value || '').trim();
+            if (v.length > 0) hints[id] = v;
+        }
+    }
+
+    localStorage.setItem('tracker_hints', JSON.stringify(hints));
+}
+
 // Save tracker options into localStorage
 function saveTrackerOptions() {
     const ids = ['settings_option', 'gossips_option', 'fairy_eggs_option'];
@@ -146,7 +150,16 @@ const InternalToShortCode = {
     lullaby: "lul",
     nwbn: "nov",
     elegy: "ele",
-    oath: "oat"
+    oath: "oat",
+    moons_tear: "moo",
+    skull_token: "sku",
+    heart_piece: "hea",
+    heart_container: "hco",
+    fairy: "fai",
+    land_title_deed: "lan",
+    swamp_title_deed: "swa",
+    mountain_title_deed: "mou",
+    ocean_title_deed: "oce"
 };
 
 // Restores the state of Check from localStorage
@@ -177,6 +190,7 @@ function loadTrackerState() {
                     const item = restored[key];
                     const baseItem = item.replace(/[0-9]+$/, ''); // remove any trailing numbers
                     const code = InternalToShortCode[baseItem];
+                    console.log('Restoring', key, 'with item', item, 'code', code);
                     if (code) {
                         const inputElement = document.getElementById(key);
                         if (inputElement) {
@@ -192,7 +206,11 @@ function loadTrackerState() {
                     }
                 }
             }
-        }     
+        }
+        
+        if (typeof Update === 'function'){
+            Update(); // Refreshes the UI according to project logic
+        }
 
         // Applies the saved peeked values (as if the user had entered them)
         const peekedRaw = localStorage.getItem('tracker_peeked_Check');
